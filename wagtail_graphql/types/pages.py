@@ -31,7 +31,7 @@ class PageInterface(graphene.Interface):
     page_type = graphene.String()
     title = graphene.String()
     seo_title = graphene.String()
-    seo_description = graphene.String()
+    search_description = graphene.String()
     show_in_menus = graphene.Boolean()
     specific = graphene.Field(lambda: PageInterface)
     children = QuerySetList(lambda: PageInterface, enable_search=True)
