@@ -1,12 +1,13 @@
 import collections
 
-from wagtail.core.blocks import BoundBlock, ListBlock, StreamValue
+from wagtail.core.blocks import BoundBlock, ListBlock, StreamValue, BooleanBlock, PageChooserBlock
 from wagtail.core.blocks.struct_block import StructValue
 from wagtail.core.rich_text import RichText
 from wagtail.documents.models import get_document_model
 from wagtail.embeds.blocks import EmbedValue
 from wagtail.embeds.embeds import get_embed
 from wagtail.images import get_image_model
+from wagtail.images.blocks import ImageChooserBlock
 
 import graphene
 
