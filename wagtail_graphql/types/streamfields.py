@@ -67,6 +67,12 @@ class StreamFieldSerializer:
         if isinstance(value, str):
             return value
 
+        if isinstance(value, int):
+            return value
+
+        if isinstance(block, BooleanBlock):
+            return value
+
         if isinstance(value, RichText):
             return convert_rich_text(
                 value.source, self.request, self.absolute_urls
@@ -84,6 +90,9 @@ class StreamFieldSerializer:
                 'title': value.title,
                 'alt': rendition.alt,
             }
+        
+        if isinstance(block, ImageChooserBlock) and not value:
+            return {}
 
         if isinstance(value, StructValue):
             return collections.OrderedDict(self.serialize_struct_block(value))
@@ -98,6 +107,27 @@ class StreamFieldSerializer:
 
         if isinstance(block, ListBlock):
             return tuple(self.serialize_list_block(block, value))
+
+        if isinstance(block, PageChooserBlock):
+            url = resolve_absolute_url(
+                value.url,
+                self.request,
+                absolute=self.absolute_urls is True
+            )
+            return {
+                'title': value.title,
+                'url': url
+            }
+
+        if isinstance(block, DocumentChooserBlock):
+            if not value:
+                return {}
+
+            return {
+                'id': value.id,
+                'title': value.title,
+                'url': value.file.url
+            }
 
         raise RuntimeError(
             f'Cannot serialize StreamField value of type "{type(value)}"'
