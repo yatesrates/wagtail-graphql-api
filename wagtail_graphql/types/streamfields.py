@@ -13,6 +13,9 @@ import graphene
 
 from wagtail_graphql.utils import resolve_absolute_url
 
+from home.blocks import FormChooserBlock
+from home.models import FormField
+
 
 def convert_rich_text(source, request, absolute):
     try:
@@ -91,9 +94,31 @@ class StreamFieldSerializer:
                 'title': value.title,
                 'alt': rendition.alt,
             }
-        
+
         if isinstance(block, ImageChooserBlock) and not value:
             return {}
+
+        if isinstance(block, FormChooserBlock):
+            field_query = FormField.objects.filter(page=value)
+            fields = []
+            for q in field_query:
+                fields.append({
+                    'sort_order': q.sort_order,
+                    'label': q.label,
+                    'field_type': q.field_type,
+                    'required': q.required,
+                    'choices': q.choices,
+                    'default_value': q.default_value,
+                    'help_text': q.help_text
+                })
+            return {
+                'submission_url': resolve_absolute_url(
+                    value.url,
+                    self.request,
+                    absolute=self.absolute_urls is True
+                ),
+                'fields': fields
+            }
 
         if isinstance(value, StructValue):
             return collections.OrderedDict(self.serialize_struct_block(value))
