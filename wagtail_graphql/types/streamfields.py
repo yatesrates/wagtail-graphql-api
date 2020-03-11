@@ -109,7 +109,8 @@ class StreamFieldSerializer:
                     'required': q.required,
                     'choices': q.choices,
                     'default_value': q.default_value,
-                    'help_text': q.help_text
+                    'help_text': q.help_text,
+                    'inline': q.inline
                 })
             return {
                 'submission_url': resolve_absolute_url(
