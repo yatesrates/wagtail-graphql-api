@@ -13,7 +13,7 @@ import graphene
 
 from wagtail_graphql.utils import resolve_absolute_url
 
-from roundtableframework.blocks import FormChooserBlock
+from roundtableframework.blocks.blocks import FormChooserBlock
 from home.models import FormField
 
 
