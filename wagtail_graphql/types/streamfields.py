@@ -1,6 +1,6 @@
 import collections
 
-from wagtail.core.blocks import BoundBlock, ListBlock, StreamValue, BooleanBlock, PageChooserBlock
+from wagtail.core.blocks import BoundBlock, ListBlock, StreamValue, BooleanBlock, PageChooserBlock, DecimalBlock
 from wagtail.core.blocks.struct_block import StructValue
 from wagtail.core.rich_text import RichText
 from wagtail.documents.models import get_document_model
@@ -73,6 +73,11 @@ class StreamFieldSerializer:
             return value
 
         if isinstance(value, int):
+            return value
+
+        if isinstance(block, DecimalBlock):
+            if not value:
+                return ''
             return value
 
         if isinstance(block, BooleanBlock):
